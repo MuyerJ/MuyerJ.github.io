@@ -114,6 +114,8 @@ volume
 
 ### 3.1、Pod定义详解
 
+- yaml完整内容
+
 ```yaml
 apiVersion: v1        　　          #必选，版本号，例如v1,版本号必须可以用 kubectl api-versions 查询到 .
 kind: Pod       　　　　　　         #必选，Pod
@@ -194,6 +196,7 @@ spec:         　　　　　　　            #必选，Pod中容器的详细�
 ```
 
 
+- 文字描述
 
 ```
 
@@ -220,3 +223,109 @@ metadata.annotation[]
 
 ---
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 4、深入掌握Servie
+
+### 4、1 Service定义详解
+
+- yaml完整内容
+
+```yaml
+apiVersion: v1             // Required
+kind: Service              // Required
+metadata:                   // Required
+  name: string             // Required
+  namespace: string       // Required
+  labels:
+    - name: string
+  annotations:
+    - name: string
+spec:                        // Required
+  selector: []             // Required
+  type: string             // Required
+  clusterIP: string
+  sessionAffinity: string
+  ports:
+  - name: string
+    protocol: string
+    port: int
+    targetPort: int
+    nodePort: int
+  status:
+    loadBalancer:
+      ingress:
+      ip: string
+      hostname: string
+```
+
+
+- 文章描述
+
+```
+spec
+    Object,必填,详细描述
+
+spec.selector[] 
+    label selector的配置,将选择指定label标签作为管理范围   
+spec.type    
+    service的访问方式,默认是ClusterIP,可选值[ClusterIP、NodePort、LoadBalancer]
+spec.clusterIP    
+    虚拟IP地址
+    当type=ClusterIP时,则系统进行自动分配,也可以手动指定
+    当type=LoadBalancer时,则需要指定
+spec.sessionAffinity    
+    ？？？ 不太会
+spec.ports[]    
+    Service需要暴露的端口列表
+spec.ports[].name    
+    端口名字
+spec.ports[].protocal
+    端口协议,默认是TCP,可选[TCP、UDP]   
+spec.ports[].port
+    端口号    
+spec.ports[].targetPort
+    需要转发到后端pod的端口号
+spec.ports[].nodePort 
+    当spec.type=NoderPort,指定映射到物理机的端口号
+
+
+
+status
+    Object,当spec.type=LoadBalancer时设置外部负载均衡地址,用于公有云环境
+    
+    
+status.loadBalancer   
+status.loadBalancer.ingress  
+    Object,外部均衡器
+status.loadBalancer.ip
+    String,外部均衡器主机IP地址   
+status.loadBalancer.hostname    
+    String,外部均衡器主机名字   
+```
+
+
+### 3.2、Service的基本用法
