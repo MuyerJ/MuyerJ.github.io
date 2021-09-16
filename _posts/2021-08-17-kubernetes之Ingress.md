@@ -406,6 +406,18 @@ spec:
 ```
 kubectl apply -f ingress.yaml
 
+Warning: extensions/v1beta1 Ingress is deprecated in v1.14+, unavailable in v1.22+; use networking.k8s.io/v1 Ingress
+Error from server (InternalError): error when creating "ingress-svc.yaml": Internal error occurred: failed calling webhook "validate.nginx.ingress.kubernetes.io": Post "https://ingress-nginx-controller-admission.kube-system.svc:443/networking/v1beta1/ingresses?timeout=10s": service "ingress-nginx-controller-admission" not found
+
+解决以上报错：
+kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+validatingwebhookconfiguration.admissionregistration.k8s.io "ingress-nginx-admission" deleted
+
+
+kubectl get ingress --all-namespaces
+NAMESPACE   NAME           CLASS    HOSTS           ADDRESS          PORTS   AGE
+default     cafe-ingress   <none>   k8s.51sou.top   182.92.242.133   80      36m
+
 
 
 ```
@@ -432,4 +444,20 @@ spec:
         backend:
           serviceName: coffee-svc
           servicePort: 80
+```
+
+
+#### 4、Ingress解决跨域问题
+
+```
+在metedata中加入：
+  annotations:
+    nginx.ingress.kubernetes.io/cors-allow-headers: >-
+      DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization
+    nginx.ingress.kubernetes.io/cors-allow-methods: 'PUT, GET, POST, OPTIONS'
+    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
+    nginx.ingress.kubernetes.io/enable-cors: 'true'
+    nginx.ingress.kubernetes.io/service-weight: ''
+  creationTimestamp: '2019-06-27T12:36:08Z'
+  generation: 1
 ```
