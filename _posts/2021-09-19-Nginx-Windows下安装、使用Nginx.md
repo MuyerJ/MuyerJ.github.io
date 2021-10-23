@@ -55,6 +55,7 @@ nginx: [error] CreateFile() "D: ginx-1.14.2/logs/nginx.pid" failed
 
 **conf/nginx.conf**
 
+
 ```
 
 #user  nobody;
