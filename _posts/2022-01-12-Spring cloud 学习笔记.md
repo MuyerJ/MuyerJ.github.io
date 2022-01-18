@@ -103,7 +103,9 @@ Mysql 5.7及以上
 
 1.父工程搭建
 
+
 步骤：
+
 ```
 <!-- 统一管理jar包版本 -->
     <properties>
@@ -186,7 +188,9 @@ Mysql 5.7及以上
 2.订单服务
 
 - 模块名字：cloud-provider-payment8001
+
 - pom.xml
+
 ```
 <dependencies>
     <dependency>
@@ -258,10 +262,13 @@ mybatis:
 ```
 
 - 主启动
+
 ```
 @SpringBootApplication
 ```
-- 业务类 
+
+- 业务类
+ 
 ```
 建表
 Entity
@@ -279,7 +286,9 @@ controller
 ### 三、Eureka服务注册与发现
 
 1、什么是服务注册？
+
 2、Eureka两个组件？
+
 ```
 Eureka Server提供服务注册服务：
     各个微服务节点通过配置启动后，会在EurekaServer中进行注册，这样EurekaServer中的服务注册表中将会存储所有可用服务节点的信息，服务节点的信息可以在界面中直观看到。
@@ -287,11 +296,13 @@ EurekaClient通过注册中心进行访问：
     是一个Java客户端，用于简化Eureka Server的交互，客户端同时也具备一个内置的、使用轮询(round-robin)负载算法的负载均衡器。在应用启动后，将会向Eureka Server发送心跳(默认周期为30秒)。
     如果Eureka Server在多个心跳周期内没有接收到某个节点的心跳，EurekaServer将会从服务注册表中把这个服务节点移除（默认90秒）
 ```
+
 3、单机Eureka
 
 EurekaServer 
 
 - pom.xml
+
 ```
 <!--eureka-server-->
 <dependency>
@@ -299,7 +310,9 @@ EurekaServer
     <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 </dependency>
 ```
+
 - application.yml
+
 ```
 server:
   port: 7001
@@ -316,7 +329,9 @@ eureka:
     #设置与Eureka Server交互的地址查询服务和注册服务都需要依赖这个地址。
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 ```
+
 - 主启动
+
 ```
 @EnableEurekaServer
 ```
@@ -325,6 +340,7 @@ EurekaClient
 
 
 - pom.xml
+
 ```
 <!--eureka-server-->
 <dependency>
@@ -332,7 +348,9 @@ EurekaClient
     <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 </dependency>
 ```
+
 - application.yml
+
 ```
 eureka:
   instance:
@@ -345,7 +363,9 @@ eureka:
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 ```
+
 - 主启动
+
 ```
 @EnableEurekaClient
 ```
@@ -408,6 +428,7 @@ eureka:
 ```
 
 负载均衡
+
 ```
 1）使用@LoadBalanced注解赋予RestTemplate负载均衡的能力
 2）通过在eureka上注册过的微服务名称调用
@@ -425,7 +446,9 @@ eureka:
 
 
 ### 四、Zookeeper服务注册与发现
+
 1、安装zookeeper
+
 ```
 1) 下载zookeeper到Centos7中
 链接：https://pan.baidu.com/s/1x_c561umrOPxzn7DkIoNQA 
@@ -453,6 +476,7 @@ mkdir /tmp/zookeeper/log
 2、创建服务提供者
 
 - pom.xml 
+
 ```
 <!--SpringBoot整合Zookeeper客户端-->
 <dependency>
@@ -480,11 +504,13 @@ mkdir /tmp/zookeeper/log
 </dependency>
 ```
 - main
+
 ```
 #该注解用于向使用consul或者zookeeper作为注册中心时注册服务
 @EnableDiscoveryClient 
 ```
 - applicaition.yml
+
 ```
 spring:
   application:
