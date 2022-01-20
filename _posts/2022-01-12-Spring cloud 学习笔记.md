@@ -183,6 +183,7 @@ Mysql 5.7及以上
     </dependencyManagement>
 
 总结：dependencyManagement的作用
+
 ```
 
 2.订单服务
@@ -191,7 +192,9 @@ Mysql 5.7及以上
 
 - pom.xml
 
+
 ```
+
 <dependencies>
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -237,9 +240,12 @@ Mysql 5.7及以上
         <scope>test</scope>
     </dependency>
 </dependencies>
+
+
 ```
 
 - application.yml
+
 
 ```
 server:
@@ -259,17 +265,23 @@ spring:
 mybatis:
   mapperLocations: classpath:mapper/*.xml
   type-aliases-package: com.yejiang.cloud.entities    # 所有Entity别名类所在包
+  
 ```
 
 - 主启动
 
+
 ```
+
 @SpringBootApplication
+
 ```
 
 - 业务类
+
  
 ```
+
 建表
 Entity
 dao：
@@ -277,6 +289,7 @@ dao：
     dao/接口
 service
 controller
+
 ```
 
 3.消费订单服务
@@ -289,12 +302,15 @@ controller
 
 2、Eureka两个组件？
 
+
 ```
+
 Eureka Server提供服务注册服务：
     各个微服务节点通过配置启动后，会在EurekaServer中进行注册，这样EurekaServer中的服务注册表中将会存储所有可用服务节点的信息，服务节点的信息可以在界面中直观看到。
 EurekaClient通过注册中心进行访问：
     是一个Java客户端，用于简化Eureka Server的交互，客户端同时也具备一个内置的、使用轮询(round-robin)负载算法的负载均衡器。在应用启动后，将会向Eureka Server发送心跳(默认周期为30秒)。
     如果Eureka Server在多个心跳周期内没有接收到某个节点的心跳，EurekaServer将会从服务注册表中把这个服务节点移除（默认90秒）
+
 ```
 
 3、单机Eureka
@@ -303,17 +319,22 @@ EurekaServer
 
 - pom.xml
 
+
 ```
+
 <!--eureka-server-->
 <dependency>
     <groupId>org.springframework.cloud</groupId>
     <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 </dependency>
+
 ```
 
 - application.yml
 
+
 ```
+
 server:
   port: 7001
 
@@ -328,12 +349,16 @@ eureka:
     service-url:
     #设置与Eureka Server交互的地址查询服务和注册服务都需要依赖这个地址。
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
 ```
 
 - 主启动
 
+
 ```
+
 @EnableEurekaServer
+
 ```
 
 EurekaClient
@@ -341,17 +366,22 @@ EurekaClient
 
 - pom.xml
 
+
 ```
+
 <!--eureka-server-->
 <dependency>
     <groupId>org.springframework.cloud</groupId>
     <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 </dependency>
+
 ```
 
 - application.yml
 
+
 ```
+
 eureka:
   instance:
     hostname: localhost #eureka服务端的实例名称
@@ -362,12 +392,16 @@ eureka:
     fetchRegistry: true
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
 ```
 
 - 主启动
 
+
 ```
+
 @EnableEurekaClient
+
 ```
 
 
@@ -376,7 +410,9 @@ eureka:
 
 EurekaClient
 
+
 ```
+
 eureka:
   client:
     #表示是否将自己注册进EurekaServer默认为true。
@@ -385,9 +421,11 @@ eureka:
     fetchRegistry: true
     service-url:
       defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka  # 集群版
+
 ```
 
 EurekaServer
+
 
 ```
 
@@ -477,6 +515,7 @@ mkdir /tmp/zookeeper/log
 
 - pom.xml 
 
+
 ```
 <!--SpringBoot整合Zookeeper客户端-->
 <dependency>
@@ -503,12 +542,15 @@ mkdir /tmp/zookeeper/log
     </exclusions>
 </dependency>
 ```
+
 - main
+
 
 ```
 #该注解用于向使用consul或者zookeeper作为注册中心时注册服务
 @EnableDiscoveryClient 
 ```
+
 - applicaition.yml
 
 ```
@@ -521,3 +563,26 @@ spring:
 ```
 
 3、创建服务消费者
+
+### 五、Consul服务注册与发现
+
+1、Consul介绍
+
+```
+service discovery:DNS或者HTTP接口注册发现
+health checking:
+key/value storage:
+multi-datacenter:无需复杂的配置,即可支持任意数量的区域。
+```
+
+2、Consul安装
+
+```
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+sudo yum -y install consul
+```
+
+3、Consul使用
+
+
